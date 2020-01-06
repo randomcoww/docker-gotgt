@@ -1,4 +1,5 @@
 FROM golang:alpine as BUILD
+ENV VERSION v0.1.0
 
 WORKDIR /go/src/github.com/gostor
 RUN set -x \
@@ -9,12 +10,12 @@ RUN set -x \
     ceph-dev \
     linux-headers \
   \
-  && git clone https://github.com/gostor/gotgt.git gotgt \
+  && git clone -b $VERSION https://github.com/gostor/gotgt.git gotgt \
   && cd gotgt \
   && CGO_ENABLED=0 GOOS=linux \
     go build -a -ldflags '-extldflags "-static"' -o gotgt gotgt.go
 
-FROM busybox:latest
+FROM scratch
 
 COPY --from=BUILD /go/src/github.com/gostor/gotgt/gotgt /
 ENTRYPOINT ["/gotgt"]
