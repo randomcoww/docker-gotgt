@@ -13,7 +13,7 @@ RUN set -x \
   && git clone -b $VERSION https://github.com/gostor/gotgt.git gotgt \
   && cd gotgt \
   && CGO_ENABLED=0 GOOS=linux \
-    go build -v -a -ldflags '-w -s -extldflags "-static"' -o gotgt gotgt.go
+    go build -v -ldflags '-s -w' -o gotgt gotgt.go
 
 FROM scratch
 
